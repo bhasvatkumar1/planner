@@ -6,6 +6,7 @@ authors = [
 description = "Planning tool for projects in erpnext"
 requires-python = ">=3.11"
 readme = "README.md"
+dynamic = ["version"]
 dependencies = [
     # "frappe~=15.0.0" # Installed and managed by bench.
 ]
