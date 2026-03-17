@@ -102,11 +102,18 @@ def handle_api_error(e, error_title, fallback_data=None):
     
     frappe.clear_messages()
     frappe.local.response.http_status_code = 500
-    frappe.local.response.error = True
     
-    for key, value in error_response.items():
-        setattr(frappe.local.response, key, value)
-    
+    # Safe attributes to set on frappe.local.response in v15
+    safe_keys = ['message', 'exc_type', 'http_status_code', 'success', 'data']
+    for key in safe_keys:
+        if key in error_response:
+            setattr(frappe.local.response, key, error_response[key])
+            
+    # Include the error details in the message/data instead of raw response attributes
+    # since v15 restricts what can be set on the response object
+    if not frappe.local.response.get('message'):
+        frappe.local.response.message = error_title
+        
     return error_response
 
 @frappe.whitelist()

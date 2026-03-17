@@ -35,9 +35,9 @@ class TestPlannerAPICritical(FrappeTestCase):
             }).insert()
 
         # Create test task
-        if not frappe.db.exists("Task", "TEST-TASK-001"):
+        if not frappe.db.exists("Atlas Task", "TEST-TASK-001"):
             frappe.get_doc({
-                "doctype": "Task",
+                "doctype": "Atlas Task",
                 "subject": "Test Task",
                 "status": "Open",
                 "priority": "Medium",
@@ -151,7 +151,7 @@ class TestPlannerAPICritical(FrappeTestCase):
     def tearDown(self):
         # Clean up test data
         try:
-            frappe.delete_doc("Task", "TEST-TASK-001")
+            frappe.delete_doc("Atlas Task", "TEST-TASK-001")
             frappe.delete_doc("Employee", "TEST-EMP-001")
             frappe.delete_doc("Department", "Test Department")
         except Exception:

@@ -18,7 +18,7 @@ class TestPlannerBase(FrappeTestCase):
     def clear_test_data(cls):
         """Clear any existing test data"""
         try:
-            frappe.db.sql("""DELETE FROM `tabTask` WHERE name = 'TEST-TASK-001'""")
+            frappe.db.sql("""DELETE FROM `tabAtlas Task` WHERE name = 'TEST-TASK-001'""")
             frappe.db.sql("""DELETE FROM `tabEmployee` WHERE employee_number = 'TEST-EMP-001'""")
             frappe.db.sql("""DELETE FROM `tabDepartment` WHERE name LIKE 'Test Department%'""")
             frappe.db.sql("""DELETE FROM `tabUser` WHERE name = 'test.employee@example.com'""")
@@ -77,8 +77,8 @@ class TestPlannerAPICritical(TestPlannerBase):
                 emp.insert()
 
             # Create test task
-            if not frappe.db.exists("Task", "TEST-TASK-001"):
-                task = frappe.new_doc("Task")
+            if not frappe.db.exists("Atlas Task", "TEST-TASK-001"):
+                task = frappe.new_doc("Atlas Task")
                 task.name = "TEST-TASK-001"
                 task.subject = "Test Task"
                 task.status = "Open"
@@ -108,13 +108,13 @@ class TestPlannerAPICritical(TestPlannerBase):
 
             # Update task
             # Reload the task document to avoid TimestampMismatchError
-            task_doc = frappe.get_doc("Task", task["id"])
+            task_doc = frappe.get_doc("Atlas Task", task["id"])
             task_doc.status = "Working"
             task_doc.priority = "High"
             task_doc.save()
 
             # Reload task to verify update
-            updated_task_doc = frappe.get_doc("Task", task["id"])
+            updated_task_doc = frappe.get_doc("Atlas Task", task["id"])
             self.assertEqual(updated_task_doc.status, "Working")
             self.assertEqual(updated_task_doc.priority, "High")
 

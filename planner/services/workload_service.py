@@ -46,7 +46,7 @@ class WorkloadService:
                         "email": user_info.get("email") or emp.user_id or "",
                         "image": user_info.get("user_image") or emp.image,
                         "role": emp.designation or "Employee",
-                        "department": emp.department_name or department or "Unknown",
+                        "department": emp.department or department or "Unknown",
                         "company": emp.company
                     }
                     employee_list.append(employee_data)
@@ -102,7 +102,8 @@ class WorkloadService:
                     holidays = get_holidays_for_employee(employee_id, start_date, end_date)
                     holiday_count = len([h for h in holidays if getdate(h.holiday_date).weekday() < 5])
                     working_days -= holiday_count
-                except (ImportError, Exception):
+                except Exception as e:
+                    frappe.logger().debug(f"HRMS check skipped or failed: {str(e)}")
                     # HRMS not available or error getting holidays
                     pass
             

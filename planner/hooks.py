@@ -3,7 +3,7 @@ app_title = "Planner"
 app_publisher = "ONFUSE AG"
 app_description = "Planning tool for projects in erpnext"
 app_email = "contact@onfuse.ch"
-app_license = "mit"
+app_license = "MIT"
 
 #fixtures = {"dt": "Project"}
 

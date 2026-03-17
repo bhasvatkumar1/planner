@@ -17,7 +17,7 @@ CACHE_EXPIRY = {
 def get_cached_tasks(department=None):
     """Get tasks from cache or fetch from database"""
     cache_key = CACHE_KEYS['PLANNER_TASKS'].format(department=department or 'all')
-    tasks = frappe.cache().get_value(cache_key)
+    tasks = frappe.cache.get_value(cache_key)
     
     if tasks is None:
         # Cache miss - fetch from database
@@ -32,7 +32,7 @@ def fetch_and_cache_tasks(department=None):
     tasks = get_planner_tasks(department)
     cache_key = CACHE_KEYS['PLANNER_TASKS'].format(department=department or 'all')
     
-    frappe.cache().set_value(
+    frappe.cache.set_value(
         cache_key,
         tasks,
         expires_in_sec=CACHE_EXPIRY['PLANNER_TASKS']
@@ -43,7 +43,7 @@ def fetch_and_cache_tasks(department=None):
 def get_cached_stats(department=None):
     """Get task statistics from cache or compute"""
     cache_key = CACHE_KEYS['TASK_STATS'].format(department=department or 'all')
-    stats = frappe.cache().get_value(cache_key)
+    stats = frappe.cache.get_value(cache_key)
     
     if stats is None:
         # Cache miss - compute stats
@@ -74,7 +74,7 @@ def compute_and_cache_stats(department=None):
     }
     
     cache_key = CACHE_KEYS['TASK_STATS'].format(department=department or 'all')
-    frappe.cache().set_value(
+    frappe.cache.set_value(
         cache_key,
         stats,
         expires_in_sec=CACHE_EXPIRY['TASK_STATS']
@@ -88,7 +88,7 @@ def get_user_preferences(user=None):
         user = frappe.session.user
     
     cache_key = CACHE_KEYS['USER_PREFERENCES'].format(user=user)
-    prefs = frappe.cache().get_value(cache_key)
+    prefs = frappe.cache.get_value(cache_key)
     
     if prefs is None:
         # Cache miss - fetch preferences
@@ -126,7 +126,7 @@ def fetch_and_cache_preferences(user):
         prefs = default_prefs
     
     cache_key = CACHE_KEYS['USER_PREFERENCES'].format(user=user)
-    frappe.cache().set_value(
+    frappe.cache.set_value(
         cache_key,
         prefs,
         expires_in_sec=CACHE_EXPIRY['USER_PREFERENCES']
@@ -139,8 +139,8 @@ def clear_task_cache(department=None):
     cache_key = CACHE_KEYS['PLANNER_TASKS'].format(department=department or 'all')
     stats_key = CACHE_KEYS['TASK_STATS'].format(department=department or 'all')
     
-    frappe.cache().delete_value(cache_key)
-    frappe.cache().delete_value(stats_key)
+    frappe.cache.delete_value(cache_key)
+    frappe.cache.delete_value(stats_key)
 
 def clear_user_cache(user=None):
     """Clear user-specific cache"""
@@ -148,7 +148,7 @@ def clear_user_cache(user=None):
         user = frappe.session.user
     
     cache_key = CACHE_KEYS['USER_PREFERENCES'].format(user=user)
-    frappe.cache().delete_value(cache_key)
+    frappe.cache.delete_value(cache_key)
 
 def invalidate_all_caches():
     """Invalidate all planner-related caches"""
